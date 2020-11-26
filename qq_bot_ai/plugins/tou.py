@@ -4,7 +4,7 @@ from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 import re
 
-tou = on_command("透", rule=None, priority=5)
+tou = on_command("透", rule=None, priority=1)
 
 
 @tou.handle()
