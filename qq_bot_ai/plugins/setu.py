@@ -22,12 +22,12 @@ async def handle_setu(bot: Bot, event: Event, state: dict):
     setu = int(state["setu"])
     if setu <= 0:
         setu = 1
-    if setu >= 5:
-        setu = 5
-    for i in range(setu):
+    if setu >= 6:
+        setu = 6
+    for _ in range(setu-1):
         a = MessageSegment.image("https://api.mtyqx.cn/api/random.php")
-        time.sleep(2)
         await weather.send(a)
         print(a)
-    #a = MessageSegment.image("http://175.24.95.94/")
+    a = MessageSegment.image("http://175.24.95.94/")
+    await weather.send(a)
     await weather.finish()
