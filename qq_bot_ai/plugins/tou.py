@@ -4,7 +4,7 @@ from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 import re
 
-tou = on_command("透", rule=None, priority=1)
+tou = on_command("透", rule=None, priority=10)
 
 
 @tou.handle()
@@ -38,35 +38,10 @@ def shield_shinnku(string: str):
     answer = False
     if len(string) == 1:
         return False
-    zhen = False
-    hong = False
-    itr = 0
-    itr = string.find("真")
-    if itr >= 0:
-        zhen = True
-        itr = string.find("红", itr)
-        if itr == -1:
-            itr = string.find("紅")
-            if itr >= 0:
-                hong = True
-            itr = string.find("纟")
-            if itr >= 0:
-                hong = True
-        else:
-            hong = True
-    if zhen and hong:
+    if (re.match(".*((r|R)(E|e)(A|a)(L|l|I)|(T|t|т)(R|r)(U|u)(E|e)|真|(s|S)(h|н|H)(i|Ï)|针|珍|zhen|眞|帧).*(红|虹|紅|red|Red|(纟.*工)|洪|宏|荭)", string)):
         answer = True
     if string.find("1062311924") >= 0:
         answer = True
-    shi = False
-    nn = False
-    ku = False
-    if string.find("shi") >= 0 or string.find("Shi") >= 0 or string.find("し") >= 0 or string.find("シ") >= 0:
-        shi = True
-    if string.find("n") >= 0 or string.find("ん") >= 0 or string.find("シ") >= 0:
-        nn = True
-    if string.find("Ku") >= 0 or string.find("ku") >= 0 or string.find("く") >= 0 or string.find("ク") >= 0:
-        ku = True
-    if nn and shi and ku:
+    if(re.match(".*((s|S)(h|н|H)(i|Ï|I)|し|シ).*((n|N)*|ん|シ).*((K|k|к)(U|u)|く|ク)", string)):
         answer = True
     return answer

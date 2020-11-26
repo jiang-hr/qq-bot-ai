@@ -1,8 +1,9 @@
 from nonebot import on_command
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event, MessageSegment
+import time
 
-weather = on_command("色图", rule=None, priority=3)
+weather = on_command("色图", rule=None, priority=2)
 
 
 @weather.handle()
@@ -25,6 +26,7 @@ async def handle_setu(bot: Bot, event: Event, state: dict):
         setu = 5
     for i in range(setu):
         a = MessageSegment.image("https://api.mtyqx.cn/api/random.php")
+        time.sleep(0.5)
         await weather.send(a)
         print(a)
     #a = MessageSegment.image("http://175.24.95.94/")

@@ -1,3 +1,4 @@
+''' # 仅作示例使用
 from nonebot import on_command
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
@@ -23,3 +24,4 @@ async def handle_city(bot: Bot, event: Event, state: dict):
 
 async def get_weather(city: str):
     return f"{city}的天气是..."
+'''

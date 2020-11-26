@@ -2,7 +2,7 @@ from nonebot import on_command, on_regex
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event, MessageSegment
 
-weather = on_regex("涩图", rule=None, priority=2)
+weather = on_regex("涩图", rule=None, priority=8)
 
 
 @weather.handle()
