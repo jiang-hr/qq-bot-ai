@@ -3,7 +3,6 @@ from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 from sympy import *
 import time
-import eventlet
 
 calculator = on_command("cal", rule=None, priority=6)
 
@@ -31,7 +30,6 @@ def cal(state: dict):
 
 @calculator.got("string", prompt="未检测到输入")
 async def handle_string(bot: Bot, event: Event, state: dict):
-    eventlet.monkey_patch()
     string_calculator = cal(state)
     await calculator.finish(string_calculator)
 
