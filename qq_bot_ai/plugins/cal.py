@@ -16,9 +16,11 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     des = "\"请勿破坏蓝的算力\""
     if args:
         state["string"] = args  # 如果用户发送了参数则直接赋值
-    if len(state["string"]) > 30:
+    if len(state["string"]) > 150:
         state["string"] = "\"请重新输入\""
     if re.match(".*os\\s*\\.", state["string"]):
+        state["string"] = err
+    if state["string"].find("help") >= 0:
         state["string"] = err
     if state["string"].find("read") >= 0:
         state["string"] = err

@@ -9,11 +9,16 @@ tou = on_command("透", rule=None, priority=10)
 
 @tou.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    args = str(event.message).strip()
+    umima = "umi🐎"
+    args = str(event.message)
+    if args.find("\n") >= 0:
+        state["bei_tou_people"] = umima
+    if args.find("mage") >= 0:
+        state["bei_tou_people"] = umima
     if args:
         state["bei_tou_people"] = args
     else:
-        state["bei_tou_people"] = "umi🐎"
+        state["bei_tou_people"] = umima
 
 
 @tou.got("bei_tou_people", prompt="umi🐎，透！")
@@ -38,7 +43,7 @@ def shield_shinnku(string: str):
     answer = False
     if len(string) == 1:
         return False
-    a = ".*(((r|R)(E|e)(A|a)(L|l|I)|(T|t|т)(R|r)(U|u)(E|e)|真|(s|S)(h|н|H)(i|Ï)|针|珍|zhen|眞|帧)|((s|S)(h|н|H)(i|Ï|I)|し|シ).*((n|N)*|ん|シ)).*((红|虹|紅|red|Red|(纟.*工)|洪|宏|荭)|((K|k|к)(U|u)|く|ク))"
+    a = ".*(((r|R)(E|e)(A|a)(L|l|I)|(T|t|т)(R|r)(U|u)(E|e)|真|(s|S)(h|н|H)(i|Ï)|针|珍|zhen|眞|帧|不假|稹|)|((s|S)(h|н|H)(i|Ï|I)|し|シ).*((n|N)*|ん|シ)).*((红|虹|紅|red|Red|(纟.*工)|洪|宏|荭)|((K|k|к)(U|u)|く|ク))"
     if (re.match(a, string)):
         answer = True
     if string.find("1062311924") >= 0:

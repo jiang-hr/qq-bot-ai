@@ -26,7 +26,7 @@ async def handle_setu(bot: Bot, event: Event, state: dict):
         setu = 5
     for i in range(setu):
         a = MessageSegment.image("https://api.mtyqx.cn/api/random.php")
-        time.sleep(0.5)
+        time.sleep(2)
         await weather.send(a)
         print(a)
     #a = MessageSegment.image("http://175.24.95.94/")
