@@ -13,8 +13,10 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     print(args)
     if args:
         state["string"] = args  # 如果用户发送了参数则直接赋值
+    if state["string"].find("eval") >= 0:
+        state["string"] = "\"请勿使用危险方法\""
     if state["string"].find("\n") >= 0:
-        state["string"] = " "
+        state["string"] = "\"请勿换行\""
 
 
 def cal(state: dict):
