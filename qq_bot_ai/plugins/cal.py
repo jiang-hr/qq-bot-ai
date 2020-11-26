@@ -33,7 +33,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
         state["string"] = forbid
     if re.match(".*gamma\\s*\\(\\s*\\d{4,}", state["string"]):
         state["string"] = forbid
-    if re.match(".*gamma\\s*\\(.*\\s*\\d{1,}\\s*\\**\\s*\\d{1,}", state["string"]):
+    if re.match(".*gamma\\s*\\(.*\\s*\\d{1,}\\s*\\*+\\s*\\d{1,}", state["string"]):
         state["string"] = forbid
     if re.match(".*dir\\s*\\(\\s*\\)", state["string"]):
         state["string"] = forbid
