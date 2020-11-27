@@ -7,7 +7,6 @@ import re
 from base64 import *
 from libnum import *
 from random import *
-import threading
 
 calculator = on_command("cal", rule=None, priority=1)
 
