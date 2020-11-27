@@ -4,6 +4,9 @@ from nonebot.adapters.cqhttp import Bot, Event
 from sympy import *
 from time import localtime as now
 import re
+from base64 import *
+from libnum import *
+from random import *
 
 calculator = on_command("cal", rule=None, priority=1)
 
@@ -18,17 +21,27 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     err = "\"请勿使用危险方法尝试破坏蓝\""
     des = "\"请勿破坏蓝的算力\""
     forbid = "\"这句话不被允许执行\""
+    priva = "\"不允许访问这里\""
     a = False
     if re.match("\\s*\".*\"\\s*", state["string"]) and state["string"].count("\"") == 2:
         a = True
     if re.match("\\s*\'.*\'\\s*", state["string"]) and state["string"].count("\'") == 2:
         a = True
+    cnt = state["string"].count("*") + 2 * state["string"].count("integrate") +\
+        state["string"].count("sin")+state["string"].count("cos") +\
+        3 * state["string"].count("limit") + 2*state["string"].count("gamma") +\
+        state["string"].count("tan") + state["string"].count("diff") +\
+        state["string"].count("**") + 2 * state["string"].count("exp")
+    if cnt > 12:
+        state["string"] = forbid
     if len(state["string"]) > 200:
         state["string"] = "\"请重新输入\""
+    if re.match(".*__.*__", state["string"]):
+        state["string"] = "\"不允许使用魔法方法\""
     if re.match(".*os\\s*\\.", state["string"]):
         state["string"] = err
-    if re.match(".*nonebot", state["string"]):
-        state["string"] = forbid
+    if re.match(".*(to_me|Bot|Event|on_command|nonebot)", state["string"]):
+        state["string"] = priva
     if re.match(".*sleep", state["string"]):
         state["string"] = forbid
     if re.match(".*gamma\\s*\\(\\s*\\d{4,}", state["string"]):
@@ -36,35 +49,29 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     if re.match(".*gamma\\s*\\(.*\\s*\\d{1,}\\s*\\*+\\s*\\d{1,}", state["string"]):
         state["string"] = forbid
     if re.match(".*dir\\s*\\(\\s*\\)", state["string"]):
+        state["string"] = priva
+    if re.match(".*\\*\\*\\s*gamma", state["string"]):
         state["string"] = forbid
-    if state["string"].find("help") >= 0:
+    if re.match(".*integrate.*\\*\\*\\s*\\d{2,}", state["string"]):
+        state["string"] = forbid
+    if re.match(".*(help|main|read|open|import|exec)", state["string"]):
         state["string"] = err
-    if state["string"].find("read") >= 0:
+    if re.match(".*eval(\\s*\\()", state["string"]):
         state["string"] = err
-    if state["string"].find("open") >= 0:
-        state["string"] = err
-    if state["string"].find("eval") >= 0:
-        state["string"] = err
-    if state["string"].find("import") >= 0:
-        state["string"] = err
-    if state["string"].find("from") >= 0:
-        state["string"] = err
-    if state["string"].find("exec") >= 0:
-        state["string"] = err
-    if state["string"].find("for") >= 0:
+    if re.match(".*for\\s", state["string"]):
         state["string"] = des
-    if state["string"].find("while") >= 0:
+    if re.match(".*while", state["string"]):
         state["string"] = des
     if state["string"].find("range") >= 0:
         state["string"] = des
     if re.match(".*\\*\\*\\s*\\d+\\s*\\*\\*\\s*\\d+", state["string"]):
-        state["string"] = des
+        state["string"] = forbid
     if re.match(".*\\*\\*\\s\\d{4,}", state["string"]):
         state["string"] = des
     if re.match(".*\\s*\\d{2,}\\s*\\*\\*\\s*\\d{3,}", state["string"]):
         state["string"] = des
     if state["string"].find("\n") >= 0:
-        state["string"] = "\"请勿换行\""
+        state["string"] = "\"请勿尝试换行\""
     if a == True:
         state["string"] = temp_state_str
 
@@ -80,8 +87,11 @@ def cal(state: dict):
     e = E
     umi = "rbq"
     rbq = "rbq"
-    伊卡 = "rbq"
     真红 = "真红"
+    透 = "透"
+    喜欢 = "我永远喜欢"
+    ntr = "爬"
+    伊卡 = "rbq"
     string = state["string"]
     string_calculator = str(eval(string))
     if len(string_calculator) > 500:

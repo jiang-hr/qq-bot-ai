@@ -1,10 +1,11 @@
 from re import L
 from nonebot import on_command
+from nonebot.plugin import on_regex
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 import re
 
-tou = on_command("透", rule=None, priority=10)
+tou = on_regex("透", rule=None, priority=10)
 
 
 @tou.handle()
@@ -12,6 +13,10 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     umima = "umi🐎"
     args = str(event.message)
     print(args)
+    if args[0] != "透":
+        args = "透停止执行"
+    args = args[1:]
+
     if args.find("\n") >= 0:
         state["bei_tou_people"] = umima
     if args.find("mage") >= 0:
@@ -28,7 +33,8 @@ async def handle_bei_tou_people(bot: Bot, event: Event, state: dict):
 
     tou_people = await get_weather(bei_tou_people)
     print(bei_tou_people)
-
+    if state["bei_tou_people"] == "停止执行":
+        await tou.finish()
     if shield_shinnku(bei_tou_people):
         tou_people = "不要总是想方设法的透真红妹妹！"
     if re.match("二阶堂蓝", bei_tou_people):
