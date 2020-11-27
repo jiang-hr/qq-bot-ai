@@ -7,8 +7,10 @@ import re
 from base64 import *
 from libnum import *
 from random import *
+import threading
 
 calculator = on_command("cal", rule=None, priority=1)
+
 
 
 @calculator.handle()
@@ -18,7 +20,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     if args:
         state["string"] = args  # 如果用户发送了参数则直接赋值
     temp_state_str = state["string"]
-    err = "\"请勿使用危险方法尝试破坏蓝\""
+    err = "\"请勿尝试使用可能破坏蓝的危险方法\""
     des = "\"请勿破坏蓝的算力\""
     forbid = "\"这句话不被允许执行\""
     priva = "\"不允许访问这里\""
@@ -93,7 +95,10 @@ def cal(state: dict):
     ntr = "爬"
     伊卡 = "rbq"
     string = state["string"]
-    string_calculator = str(eval(string))
+    try:
+        string_calculator = str(eval(string))
+    except BaseException as e:
+        string_calculator = "蓝执行出现错误，错误原因如下：\n" + str(e.args)
     if len(string_calculator) > 500:
         string_calculator = string_calculator[:500] + '...更多省略'
     return string_calculator

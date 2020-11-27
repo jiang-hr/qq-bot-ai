@@ -18,7 +18,6 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
 
 @weather.got("setu", prompt="")
 async def handle_setu(bot: Bot, event: Event, state: dict):
-    # setu = state["setu"]
     a = MessageSegment.image("https://api.mtyqx.cn/api/random.php")
     print(a)
     await weather.finish(a)
