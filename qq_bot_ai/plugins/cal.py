@@ -51,22 +51,22 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     if re.match(".*sleep", state["string"]):
         stop = True
     if re.match(".*(integrate|exp|gamma)\\s*\\(\\s*\\d{4,}", state["string"]):
-        state["string"] = forbid
+        stop = True
     if re.match(".*(integrate|exp|gamma)\\s*\\(.*\\s*\\d{1,}\\s*\\*+\\s*\\d{1,}", state["string"]):
-        state["string"] = forbid
+        stop = True
     if re.match(".*dir\\s*\\(\\s*\\)", state["string"]):
         state["string"] = priva
     if re.match(".*\\*\\*\\s*gamma", state["string"]):
-        state["string"] = forbid
+        stop = True
     if re.match(".*(integrate|exp|gamma).*\\*\\*\\s*\\d{2,}", state["string"]):
-        state["string"] = forbid
+        stop = True
     if re.match(".*(range|help|main|read|open|import|exec|for\\s|while|eval\\s*\\()", state["string"]):
         stop = True
     if re.match(".*\\*\\*\\s*\\d+\\s*\\*\\*\\s*\\d+", state["string"]):
-        state["string"] = forbid
+        stop = True
     if re.match(".*\\*\\*\\s*\\d{4,}", state["string"]):
-        state["string"] = des
-    if re.match(".*\\s*\\d{2,}\\s*\\*\\*\\s*\\d{3,}", state["string"]):
+        stop = True
+    if re.match(".*\\s*\\d{2,}\\s*\\*\\*\\s*\\d{2,}", state["string"]):
         state["string"] = des
     if state["string"].find("\n") >= 0:
         stop = True
@@ -85,8 +85,7 @@ def cal(state: dict):
     f = Function("f")
     g = Function("g")
     e = E
-    umi = "rbq"
-    rbq = "rbq"
+    umi = rbq = "rbq"
     真红 = "真红"
     ntr = "爬"
     string = state["string"]
