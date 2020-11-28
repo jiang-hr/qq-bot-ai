@@ -1,7 +1,7 @@
 from nonebot.plugin import on_regex
 from nonebot.adapters.cqhttp import Bot, Event
 
-weather = on_regex(".*((V|v)(P|p)(N|n)|ssr|v2ray|(T|t)rojan)",
+weather = on_regex(".*((V|v)(P|p)(N|n)|ssr|v2ray|(T|t)rojan|(T|t)or)",
                    rule=None, priority=8)
 
 
