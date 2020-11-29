@@ -1,27 +1,55 @@
-''' # 仅作示例使用
 from nonebot import on_command
+from nonebot.plugin import on_regex
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
+import json
+import urllib
+import urllib.request
+import re
+from urllib.parse import urlencode
 
-weather = on_command("天气", rule=to_me(), priority=5)
+weather = on_regex(".*天气$", rule=None, priority=9)
 
 
 @weather.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    args = str(event.message).strip()  # 首次发送命令时跟随的参数，例：/天气 上海，则args为上海
-    if args:
-        state["city"] = args  # 如果用户发送了参数则直接赋值
+    args = str(event.message).strip()
+    state["city"] = args[:-2]
+    if state["city"][-1] == "的":
+        state["city"] = state["city"][:-1]
 
 
-@weather.got("city", prompt="你想查询哪个城市的天气呢？")
+def get(city):
+    url = 'http://api.k780.com'
+    params = {
+        'app': 'weather.today',
+        'weaid': city,
+        'appkey': '55767',
+        'sign': 'e42fc54147bdbada67f25bc83540d1ab',
+        'format': 'json',
+    }
+    params = urlencode(params)
+    f = urllib.request.urlopen('%s?%s' % (url, params))
+    nowapi_call = f.read()
+    a_result = json.loads(nowapi_call)
+    if a_result and a_result['success'] != '0':
+        print(a_result['result'])
+        return a_result['result']
+    else:
+        return "蓝没有得到结果，请检查输入或者等1小时后再调用"
+
+
+@weather.got("city", prompt="")
 async def handle_city(bot: Bot, event: Event, state: dict):
-    city = state["city"]
-    if city not in ["上海", "北京"]:
-        await weather.reject("你想查询的城市暂不支持，请重新输入！")
-    city_weather = await get_weather(city)
-    await weather.finish(city_weather)
-
-
-async def get_weather(city: str):
-    return f"{city}的天气是..."
-'''
+    m = get(state["city"])
+    if m == "蓝没有得到结果，请检查输入或者等1小时后再调用":
+        await weather.finish(m)
+    said = "城市: " + m['citynm'] + "\n"
+    said += "今日温度: " + m['temperature'] + "\n"
+    said += "实时温度: " + m['temperature_curr'] + "\n"
+    said += "风向: " + m['wind'] + "\n"
+    said += "风力: " + m['winp'] + "\n"
+    said += "今日天气: " + m['weather'] + "\n"
+    said += "实时天气: " + m['weather_curr'] + "\n"
+    said += "湿度: " + m['humidity']
+    await weather.finish(said)

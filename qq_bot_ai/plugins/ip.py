@@ -35,7 +35,7 @@ async def handle_rate(bot: Bot, event: Event, state: dict):
 
     a_result = json.loads(nowapi_call)
     if not a_result:
-        await weather.finish('Request nowapi fail. 请等1小时后再调用')
+        await weather.finish("蓝没有得到结果，请检查输入或者等1小时后再调用")
     print(a_result['result'])
     m = a_result['result']
     await weather.finish(m["detailed"])

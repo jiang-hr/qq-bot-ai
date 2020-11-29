@@ -88,6 +88,7 @@ def cal(state: dict):
     umi = rbq = "rbq"
     真红 = "真红"
     ntr = "爬"
+    贴贴 = "贴贴"
     string = state["string"]
     if string == "":
         return ""

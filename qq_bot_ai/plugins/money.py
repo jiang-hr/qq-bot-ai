@@ -43,10 +43,8 @@ async def handle_rate(bot: Bot, event: Event, state: dict):
     nowapi_call = f.read()
 
     a_result = json.loads(nowapi_call)
-    if a_result:
-        pass
-    else:
-        await weather.finish('Request nowapi fail. 请等1小时后再调用')
+    if not a_result:
+        await weather.finish("蓝没有得到结果，请检查输入或者等1小时后再调用")
     print(a_result['result'])
     m = a_result['result']
     be_sent = str(float(m["rate"]) * money) + \
