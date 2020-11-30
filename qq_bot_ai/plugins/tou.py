@@ -10,7 +10,7 @@ tou = on_regex("透", rule=None, priority=10)
 
 @tou.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    umima = "umi🐎"
+    # umima = "umi🐎"
     stop = "透停止执行"
     args = str(event.message)
     print(args)
@@ -36,7 +36,7 @@ async def handle_bei_tou_people(bot: Bot, event: Event, state: dict):
         await tou.finish()
     if shield_shinnku(bei_tou_people):
         tou_people = "不要总是想方设法的透真红妹妹！"
-    if re.match("蓝", bei_tou_people):
+    if re.match(".*蓝", bei_tou_people):
         tou.finish()
     await tou.finish(tou_people)
 
