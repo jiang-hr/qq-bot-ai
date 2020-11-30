@@ -16,11 +16,13 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
     print(args)
     if args[0] != "透":
         args = stop
+    if len(args) == 1:
+        args = stop
     args = args[1:]
-
+    if args.find("透") >= 0:
+        args = stop
     if args.find("\n") >= 0:
         args = stop
-
     state["bei_tou_people"] = args
 
 
