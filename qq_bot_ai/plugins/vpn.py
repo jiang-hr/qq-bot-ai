@@ -1,7 +1,7 @@
 from nonebot.plugin import on_regex
 from nonebot.adapters.cqhttp import Bot, Event
 
-vpn_warn = on_regex(".*((V|v)(P|p)(N|n)|ssr|v2ray|(T|t)rojan|(T|t)or|(G|g)(W|w)(F|f))",
+vpn_warn = on_regex(".*((V|v)(P|p)(N|n)|v2ray|(T|t)rojan|(G|g)(W|w)(F|f)|vmess)",
                    rule=None, priority=8)
 
 
