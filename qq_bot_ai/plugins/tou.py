@@ -10,14 +10,14 @@ tou = on_regex("透", rule=None, priority=10)
 
 @tou.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
-    stop = "透停止执行"
+    stop = ""
     args = str(event.message)
     print(args)
     if args[0] != "透":
         args = stop
-    if len(args) == 1:
-        args = stop
     args = args[1:]
+    if len(args) <= 1:
+        args = stop
     if args.find("透") >= 0:
         args = stop
     if args.find("\n") >= 0:
@@ -31,7 +31,7 @@ async def handle_bei_tou_people(bot: Bot, event: Event, state: dict):
 
     tou_people = await get_weather(bei_tou_people)
     print(bei_tou_people)
-    if state["bei_tou_people"] == "透停止执行":
+    if state["bei_tou_people"] == "":
         await tou.finish()
     if shield_shinnku(bei_tou_people):
         tou_people = "不要总是想方设法的透真红妹妹！"
