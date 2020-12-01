@@ -19,6 +19,8 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
 
 @I_always_love.got("love", prompt="")
 async def handle_love(bot: Bot, event: Event, state: dict):
+    if state["love"].find("真红") >= 0:
+        await I_always_love.finish("我永远喜欢二阶堂真红")
     if state["love"].find("二阶堂蓝") >= 0:
         await I_always_love.finish("我永远喜欢二阶堂真红")
     elif random.randint(0, 1) < 1:
