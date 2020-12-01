@@ -5,6 +5,7 @@ from nonebot.adapters.cqhttp import Bot, Event
 from sympy import *
 from time import localtime as now
 import re
+import math
 from base64 import *
 from libnum import *
 from random import *
@@ -48,7 +49,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
         stop = True
     if re.match(".*(to_me|Bot|Event|on_command|nonebot)", state["string"]):
         stop = True
-    if re.match(".*sleep", state["string"]):
+    if re.match(".*(sleep|print)", state["string"]):
         stop = True
     if re.match(".*(integrate|exp|gamma)\\s*\\(\\s*\\d{4,}", state["string"]):
         stop = True

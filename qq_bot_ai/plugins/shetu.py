@@ -8,7 +8,7 @@ weather = on_regex("(色|涩)图", rule=None, priority=8)
 @weather.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: dict):
     args = str(event.message).strip()
-    if args != "涩图":
+    if args != "涩图" or args != "色图":
         await weather.finish()
     if args:
         state["setu"] = args
