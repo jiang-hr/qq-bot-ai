@@ -22,10 +22,10 @@ m = Symbol("m")
 f = Function("f")
 g = Function("g")
 e = E
-umi = rbq = "rbq"
-真红 = "真红"
-ntr = "爬"
-贴贴 = "贴贴"
+umi = rbq = 小白 = Symbol("rbq")
+真红 = Symbol("真红")
+ntr = Symbol("爬")
+贴贴 = Symbol("贴贴")
 
 calculator = on_regex(".*", rule=None, priority=1000)
 
