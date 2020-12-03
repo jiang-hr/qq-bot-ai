@@ -97,11 +97,8 @@ async def handle_string(bot: Bot, event: Event, state: dict):
 
     async def lambda_f():
         global string_calculator
-        print("begin")
         try:
-            print("not in eval?")
             string_calculator = str(eval(string))
-            print("in eval?")
             if len(string_calculator) > 500:
                 string_calculator = string_calculator[:500] + '...更多省略'
         except NameError as e:
@@ -113,6 +110,7 @@ async def handle_string(bot: Bot, event: Event, state: dict):
         except BaseException as e:
             string_calculator = "蓝遇到了错误：\n" + str(e)
             print(string_calculator)
+        print("here")
         await calculator.finish(string_calculator)
 
     try:
