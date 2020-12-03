@@ -3,12 +3,29 @@ from nonebot.plugin import on_regex
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, Event
 from sympy import *
-from time import localtime as now
+import time
+from time import sleep
+from threading import Thread
 import re
 import math
 from base64 import *
 from libnum import *
 from random import *
+import asyncio
+
+
+x = Symbol("x")
+y = Symbol("y")
+z = Symbol("z")
+n = Symbol("n")
+m = Symbol("m")
+f = Function("f")
+g = Function("g")
+e = E
+umi = rbq = "rbq"
+真红 = "真红"
+ntr = "爬"
+贴贴 = "贴贴"
 
 calculator = on_regex(".*", rule=None, priority=1000)
 
@@ -41,7 +58,7 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
         3 * state["string"].count("limit") + 2*state["string"].count("gamma") +\
         state["string"].count("tan") + state["string"].count("diff") +\
         state["string"].count("**") + 2 * state["string"].count("exp")
-    if cnt > 12:
+    if cnt > 20:
         state["string"] = forbid
     if re.match(".*__.*__", state["string"]):
         stop = True
@@ -51,24 +68,14 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
         stop = True
     if re.match(".*(sleep|print)", state["string"]):
         stop = True
-    if re.match(".*(integrate|exp|gamma)\\s*\\(\\s*\\d{4,}", state["string"]):
-        stop = True
-    if re.match(".*(integrate|exp|gamma)\\s*\\(.*\\s*\\d{1,}\\s*\\*+\\s*\\d{1,}", state["string"]):
-        stop = True
     if re.match(".*dir\\s*\\(\\s*\\)", state["string"]):
-        state["string"] = priva
+        stop = True
     if re.match(".*\\*\\*\\s*gamma", state["string"]):
         stop = True
-    if re.match(".*(integrate|exp|gamma).*\\*\\*\\s*\\d{2,}", state["string"]):
+    if re.match(".*(integrate|exp|gamma).*\\d{4,}", state["string"]):
         stop = True
     if re.match(".*(range|help|main|read|open|import|exec|for\\s|while|eval\\s*\\()", state["string"]):
         stop = True
-    if re.match(".*\\*\\*\\s*\\d+\\s*\\*\\*\\s*\\d+", state["string"]):
-        stop = True
-    if re.match(".*\\*\\*\\s*\\d{4,}", state["string"]):
-        stop = True
-    if re.match(".*\\s*\\d{2,}\\s*\\*\\*\\s*\\d{2,}", state["string"]):
-        state["string"] = des
     if state["string"].find("\n") >= 0:
         stop = True
     if a == True:
@@ -77,34 +84,46 @@ async def handle_first_receive(bot: Bot, event: Event, state: dict):
         state["string"] = ""
 
 
-def cal(state: dict):
-    x = Symbol("x")
-    y = Symbol("y")
-    z = Symbol("z")
-    n = Symbol("n")
-    m = Symbol("m")
-    f = Function("f")
-    g = Function("g")
-    e = E
-    umi = rbq = "rbq"
-    真红 = "真红"
-    ntr = "爬"
-    贴贴 = "贴贴"
-    string = state["string"]
-    if string == "":
-        return ""
-    try:
-        string_calculator = str(eval(string))
-    except BaseException as e:
-        string_calculator = ""
-    if len(string_calculator) > 500:
-        string_calculator = string_calculator[:500] + '...更多省略'
-    return string_calculator
-
-
 @calculator.got("string", prompt=" ")
 async def handle_string(bot: Bot, event: Event, state: dict):
-    string_calculator = cal(state)
-    if string_calculator == "":
-        await calculator.finish()
-    await calculator.finish(string_calculator)
+    string = state["string"]
+    string = string.replace("&#91;", "[")
+    string = string.replace("&#93;", "]")
+
+    if string == "":
+        return ""
+
+    string_calculator = ""
+
+    async def lambda_f():
+        global string_calculator
+        print("begin")
+        try:
+            print("not in eval?")
+            string_calculator = str(eval(string))
+            print("in eval?")
+            if len(string_calculator) > 500:
+                string_calculator = string_calculator[:500] + '...更多省略'
+        except NameError as e:
+            print(e.args)
+            string_calculator = ""
+        except SyntaxError as e:
+            print(e.args)
+            string_calculator = ""
+        except BaseException as e:
+            string_calculator = "蓝遇到了错误：\n" + str(e)
+            print(string_calculator)
+        await calculator.finish(string_calculator)
+
+    try:
+        await asyncio.wait_for(lambda_f(), timeout=1.0)
+    except asyncio.TimeoutError:
+        string_calculator = '蓝运算超时了!'
+        print(string_calculator)
+        await calculator.finish(string_calculator)
+
+    await calculator.finish()
+
+
+def now():
+    return time.strftime("%x")+" , " + time.strftime("%X") + " 东八区"

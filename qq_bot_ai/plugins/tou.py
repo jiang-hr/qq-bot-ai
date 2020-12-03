@@ -48,7 +48,7 @@ def shield_shinnku(string: str):
     answer = False
     if len(string) == 1:
         return False
-    a = ".*(((r|R)(E|e)(A|a)(L|l|I)|(T|t|т)(R|r)(U|u)(E|e)|真|(s|S)(h|н|H)(i|Ï)|针|珍|zhen|眞|帧|不.*假|稹)|((s|S)(h|н|H)(i|Ï|I)|し|シ).*((n|N)*|ん|シ)).*((红|虹|紅|red|Red|(纟.*工)|洪|宏|荭)|((K|k|к)(U|u)|く|ク))"
+    a = ".*(((r|R)(E|e)(A|a)(L|l|I)|(T|t|т)(R|r)(U|u)(E|e)|真|(s|S)(h|н|H)(i|Ï)|针|珍|zhen|眞|帧|不.*假|稹|蒖)|((s|S)(h|н|H)(i|Ï|I)|し|シ).*((n|N)*|ん|シ)).*((红|虹|紅|red|Red|(纟.*工)|洪|宏|荭)|((K|k|к)(U|u)|く|ク))"
     if (re.match(a, string)):
         answer = True
     if string.find("1062311924") >= 0:
